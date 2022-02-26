@@ -14,6 +14,24 @@ services:
       - postgres
     restart: unless-stopped
 
+  postgres-fraud:
+      container_name: postgres-fraud
+      image: postgres
+      environment:
+        POSTGRES_PASSWORD: mprosnev
+        POSTGRES_USER: mprosnev
+        PGDATA: /data/postgres-fraud
+      volumes:
+        - postgres:/data/postgres
+      expose:
+        - "5433"
+      ports:
+        - "5433:5433"
+      command: -p 5433
+      networks:
+        - postgres
+      restart: unless-stopped
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
