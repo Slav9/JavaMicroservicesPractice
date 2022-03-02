@@ -2,6 +2,8 @@ package com.itfb.customer;
 
 import com.itfb.clients.FraudCheckResponse;
 import com.itfb.clients.FraudClient;
+import com.itfb.clients.NotificationClient;
+import com.itfb.clients.NotificationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ public class CustomerService{
 
     private final CustomerRepository customerRepository;
     private final FraudClient fraudClient;
+    private final NotificationClient notificationClient;
 
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
@@ -27,6 +30,14 @@ public class CustomerService{
             throw new IllegalStateException("fraudster");
         }
 
+        notificationClient.sendNotification(
+                new NotificationRequest(
+                        customer.getId(),
+                        customer.getEmail(),
+                        String.format("Hi %s, welcome", customer.getFirstName())
+                )
+        );
 
     }
+
 }

@@ -32,6 +32,24 @@ services:
         - postgres
       restart: unless-stopped
 
+  postgres-notifications:
+    container_name: postgres-notifications
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: mprosnev
+      POSTGRES_USER: mprosnev
+      PGDATA: /data/postgres-notifications
+    volumes:
+      - postgres:/data/postgres
+    expose:
+      - "5434"
+    ports:
+      - "5434:5434"
+    command: -p 5434
+    networks:
+      - postgres
+    restart: unless-stopped
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
